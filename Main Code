@@ -1,0 +1,637 @@
+var s : string
+var option : string
+var len : int
+var loco : int
+var eloco : int
+var l : string
+var c : string
+var found : boolean := false
+var T : int := 6
+var L : int := 6
+var sentence : string
+var vowels : int := 0
+var consonants : int := 0
+var space : int := 1
+var numeric : int := 0
+var others : int := 0
+var word : string
+var sNew : string
+var replace : string
+var d : string := " "
+var count : int := 0
+var shift : int
+var shiftn : int
+
+procedure splashscreen
+    var n, y, x, c : int := 0
+    var l : string (1)
+    var ch : char
+    colorback (black)
+    cls
+    loop
+        randint (n, ord ("a"), ord ("z"))
+        l := chr (n)
+        randint (x, 0, maxx)
+        randint (y, 0, maxy)
+        randint (c, 0, maxcolor)
+        locatexy (x, y)
+        color (c)
+        put l ..
+        exit when hasch
+
+    end loop
+    colorback (white)
+    color (black)
+    cls
+end splashscreen
+
+splashscreen
+procedure mydelay
+    var ch : string (1)
+    put "Press any key to continue.." ..
+    getch (ch)
+end mydelay
+
+procedure shadowbox (T, L, H, W, WC, SC, BC : int)
+    colorback (WC) %Wash colour layer 1
+    cls
+    colorback (SC) %shadow colour layer 2
+
+    for row : 1 .. H %For each row
+        locate (T + row + 1, L + 1)
+        put " " : W .. % prints w spaces across each row
+        %delay (500)
+    end for
+    colorback (BC) % box colour layer 3
+    %drawbox
+    for row : 1 .. H %draws box same as shadow
+        locate (T + row, L) %puts cursor on correct row
+        put " " : W .. %puts w spaces across each row
+        %  delay (500)
+    end for
+end shadowbox
+
+procedure inputsentence
+    cls
+    shadowbox (T, L, 9, 60, 144, 191, 44)
+    locate (T + 1, L + 20)
+    put "Input a sentence " .. %stores the sentence
+    locate (T + 2, L + 1)
+    put ": " ..
+    get s : *
+end inputsentence
+
+procedure s1
+    cls
+    shadowbox (T, L, 9, 50, 144, 191, 44) %shadow box
+    locate (T + 1, L + 10)
+    put "First position of a letter" .. %Title of the procedure
+    locate (T + 3, L + 1)
+    put "Sentence: " ..
+    put s .. %displaying the sentence
+    locate (T + 5, L + 1)
+    put "Input the letter to find: " ..
+    get l %getting the letter to search in the sentence
+    len := length (s)
+    for i : 1 .. len %looking through the length of the sentence
+        if s (i) = l then %if the word we are looking for is found in the sentence then found is true
+            found := true
+            locate (T + 6, L + 1)
+            put "The letter ", l, " was first found in position ", i .. %puts the letter found and the location in where it was found at
+            exit %exits so that it dosent look for letters afterwards
+        else
+            found := false %if found isnt true than found is false
+        end if
+    end for
+    if (found = false) then
+        locate (T + 6, L + 1)
+        put "The letter ", l, " was not found." .. %says the letter is not found
+    end if
+    locate (T + 8, L + 1)
+    mydelay
+end s1
+
+procedure s2
+    var count : int := 0
+    cls
+    shadowbox (T, L, 9, 45, 144, 191, 44)
+    locate (T + 1, L + 1)
+    put "Count all occurrences of a single letter." ..
+    locate (T + 3, L + 1)
+    put "Sentence: " ..
+    put s ..
+    locate (T + 5, L + 1)
+    put "Input the letter to find: " ..
+    get l
+    for i : 1 .. length (s)
+        if s (i) = l then
+            count := count + 1
+        end if
+    end for
+    locate (T + 7, L + 1)
+    put "The letter ", l, " was found ", count, " times." ..
+    locate (T + 8, L + 1)
+    mydelay
+end s2
+
+procedure s3
+    cls
+    vowels := 0
+    consonants := 0
+    numeric := 0
+    others := 0
+    shadowbox (T, L, 11, 30, 144, 191, 44)
+    locate (T + 1, L + 10)
+    put "Statistics" ..
+    locate (T + 3, L + 2)
+    put "Sentence: " ..
+    put s ..
+    for i : 1 .. length (s)
+        c := s (i)
+        if (c = "a" or c = "e" or c = "i" or c = "o" or c = "u") then
+            vowels := vowels + 1
+        elsif (c >= "b" and c <= "z") then
+            consonants := consonants + 1
+        elsif (c = " ") then
+            space := space + 1
+        elsif (c = "1" or c = "2" or c = "3" or c = "4" or c = "5" or c = "6" or c = "7" or c = "8" or c = "9" or c = "0") then
+            numeric := numeric + 1
+        else
+            others := others + 1
+        end if
+    end for
+    locate (T + 5, L + 2)
+    put "Vowels:", vowels ..
+    locate (T + 6, L + 2)
+    put "Consonants:", consonants ..
+    locate (T + 7, L + 2)
+    put "Numeric:", numeric ..
+    locate (T + 8, L + 2)
+    put "Others:", others ..
+    locate (T + 10, L + 1)
+    mydelay
+end s3
+
+procedure s4
+    cls
+    space := 1
+    shadowbox (T, L, 8, 45, 144, 191, 44)
+    locate (T + 1, L + 2)
+    put "Count the number of words in the sentence." ..
+    locate (T + 3, L + 1)
+    put "Sentence: " ..
+    put s ..
+    for i : 1 .. length (s)
+        var sp : string := s (i)
+        if sp = " " then
+            space := space + 1
+        end if
+    end for
+    locate (T + 5, L + 1)
+    put "There are ", space, " words." ..
+    locate (T + 7, L + 1)
+    mydelay
+end s4
+
+procedure s5
+    cls
+    loco := 1
+    shadowbox (T, L, 9, 50, 144, 191, 44)
+    locate (T + 1, L + 12)
+    put "First location of a word" ..
+    locate (T + 3, L + 1)
+    put "Sentence: " ..
+    put s ..
+    sNew := s
+    locate (T + 4, L + 1)
+    put "Word to find: " ..
+    get word
+    len := length (s)
+    loop
+        exit when (loco > len - length (word) + 1) %exit when the end of the sentence is reached
+        d := sNew (loco .. (loco + length (word) - 1)) % the current word
+
+        if (word = d) then
+            found := true
+            exit
+        else
+            loco := loco + 1
+        end if
+    end loop
+    if (found = false) then
+        locate (T + 6, L + 1)
+        put "The word ", word, " was not found in the sentence" ..
+    else
+        locate (T + 6, L + 1)
+        put "The word was found in position ", loco ..
+        locate (T + 8, L + 1)
+        mydelay
+    end if
+end s5
+procedure s6
+    cls
+    loco := 1
+    count := 0
+    shadowbox (T, L, 9, 50, 144, 191, 44)
+    locate (T + 1, L + 12)
+    put "Times the word is found" ..
+    locate (T + 3, L + 1)
+    put "Sentence: " ..
+    put s ..
+    sNew := s
+    locate (T + 4, L + 1)
+    put "Word to find: " ..
+    get word
+    len := length (s)
+    loop
+        exit when (loco > len - length (word) + 1)
+        d := sNew (loco .. (loco + length (word) - 1))
+
+        if (word = d) then
+            found := true
+            count := count + 1
+            loco := loco + 1
+        else
+            loco := loco + 1
+        end if
+    end loop
+    if (found = false) then
+        locate (T + 6, L + 1)
+        put "The word ", word, " was not found in the sentence" ..
+    else
+        locate (T + 6, L + 1)
+        put "The word ", word, " was found ", count, " times." ..
+    end if
+    locate (T + 8, L + 1)
+    mydelay
+end s6
+
+
+procedure r1
+    cls
+    sNew := s %shows that the new sentence is copied from the old sentence
+    shadowbox (T, L, 11, 50, 144, 191, 44)
+    locate (T + 1, L + 10)
+    put "Replace first occurrence of a letter" .. %name of procedure
+    locate (T + 3, L + 1)
+    put "Sentence: " ..
+    put s .. %shows the sentence
+    locate (T + 5, L + 1)
+    put "Input the letter to replace: " ..
+    get l %getting the letter that needs to be replaced
+    locate (T + 6, L + 1)
+    put "Input the replacement: " .. % letter being used to replace
+    get replace
+    len := length (s)
+    for i : 1 .. len %looking through the sentence and getting the position of each letter
+
+        if s (i) = l then %if the letter is found in the sentence
+            sNew := sNew (1 .. i - 1) + replace + sNew (i + 1 .. *) % copies the sentence and input the letter in while subtracting the original letter out
+            found := true
+            exit
+        else
+            found := false
+        end if
+    end for
+    if found = true then
+        locate (T + 8, L + 1)
+        put "New sentence: ", sNew .. %displays the new sentence
+    elsif (found = false) then
+        locate (T + 8, L + 1)
+        put "The letter ", l, " was not found." .. %else if found is false than says the letter is not found
+    end if
+    locate (T + 10, L + 1)
+    mydelay
+end r1
+
+procedure r2
+    cls
+    shadowbox (T, L, 11, 50, 144, 191, 44)
+    locate (T + 1, L + 10)
+    put "Replace all occurance of a letter" ..
+    locate (T + 3, L + 1)
+    put "Sentence:  " ..
+    put s ..
+    sNew := s
+    locate (T + 5, L + 1)
+    put "Input the letter to replace: " ..
+    get l
+    locate (T + 6, L + 1)
+    put "Input the replacement: " ..
+    get replace
+    len := length (s)
+    for i : 1 .. len
+        if s (i) = l then
+            sNew := sNew (1 .. i - 1) + replace + sNew (i + 1 .. *)
+        end if
+    end for
+    if sNew = s then
+        locate (T + 8, L + 1)
+        put "Letter ", l, "not found, nothing replace."
+    else
+        locate (T + 8, L + 1)
+        put "New sentence: ", sNew ..
+    end if
+    locate (T + 10, L + 1)
+    mydelay
+end r2
+
+procedure r3
+    cls
+    vowels := 0
+    shadowbox (T, L, 9, 50, 144, 191, 44)
+    locate (T + 1, L + 10)
+    put " Replace all vowels" ..
+    locate (T + 3, L + 1)
+    put "Sentence: " ..
+    put s ..
+    sNew := s
+    locate (T + 4, L + 1)
+    put "Input replacement letter: " ..
+    get l
+    len := length (s)
+    for i : 1 .. len
+        c := s (i)
+        if (c = "a" or c = "e" or c = "i" or c = "o" or c = "u") then
+            sNew := sNew (1 .. i - 1) + l + sNew (i + 1 .. *)
+        end if
+    end for
+    if sNew = s then
+        locate (T + 6, L + 1)
+        put "Letter ", l, "not found, nothing replaced."
+    else
+        locate (T + 6, L + 1)
+        put "New sentence: ", sNew ..
+    end if
+    locate (T + 8, L + 1)
+    mydelay
+end r3
+
+procedure r4
+    cls
+    loco := 1
+    found := false
+    shadowbox (T, L, 10, 50, 144, 191, 44)
+    locate (T + 1, L + 20)
+    put "Replace word" ..
+    locate (T + 3, L + 1)
+    put "Sentence:  " ..
+    put s ..
+    sNew := s
+    locate (T + 4, L + 1)
+    put "Word to replace: " ..
+    get word
+    locate (T + 5, L + 1)
+    put "Input the replacement: " ..
+    get replace
+    len := length (s)
+    loop
+        exit when (loco > len - length (word) + 1)
+        locate (T + 6, L + 1)
+        d := sNew (loco .. (loco + length (word) - 1))
+        if (word = d) then
+
+            sNew := sNew (1 .. loco - 1) + replace + sNew (loco + length (word) .. *)
+            found := true
+            loco := loco + length (replace)
+            len := length (sNew)
+        else
+            loco := loco + 1
+        end if
+    end loop
+    if found = false then
+        locate (T + 7, L + 1)
+        put "The word ", word, " was not found in the sentence" ..
+    else
+        locate (T + 7, L + 1)
+        put "New sentence: ", sNew ..
+    end if
+    locate (T + 9, L + 1)
+    mydelay
+end r4
+
+procedure r5
+    cls
+    loco := 1
+    found := false
+    shadowbox (T, L, 15, 60, 144, 191, 44)
+    locate (T + 1, L + 25)
+    put "Replace word" ..
+    locate (T + 3, L + 1)
+    put "Sentence:  " ..
+    put s ..
+    sNew := s
+    locate (T + 4, L + 1)
+    put "Word to replace: " ..
+    get word
+    locate (T + 5, L + 1)
+    put "Replacement: " ..
+    get replace
+    len := length (s)
+    loop
+        exit when (loco > len - length (word) + 1)
+        locate (T + 6, L + 1)
+        d := sNew (loco .. (loco + length (word) - 1))
+        if (word = d) then
+            locate (T + 7, L + 1)
+            put "Do you want to replace: ", word ..
+            locate (T + 8, L + 1)
+            put "With word: ", replace ..
+            locate (T + 9, L + 1)
+            put "In position: ", loco ..
+            locate (T + 10, L + 1)
+            put "Yes or No: ", " " ..
+            locate (T + 10, L + 12)
+            get option
+            if option = "Yes" or option = "yes" or option = "Y" or option = "y" then
+                sNew := sNew (1 .. loco - 1) + replace + sNew (loco + length (word) .. *)
+                found := true
+                loco := loco + length (replace)
+                len := length (sNew)
+                loco := loco + 1
+            elsif option = "No" or option = "no" or option = "N" or option = "n" then
+                loco := loco + 1
+            end if
+        else
+            loco := loco + 1
+        end if
+    end loop
+    if found = false then
+        locate (T + 12, L + 1)
+        put "The word ", word, " was not found in the sentence" ..
+    else
+        locate (T + 12, L + 1)
+        put "New sentence: ", sNew ..
+    end if
+    locate (T + 14, L + 1)
+    mydelay
+end r5
+
+procedure e1
+    cls
+    d := " "
+    sNew := "" %Makes it so the new sentence is blank
+    shadowbox (T, L, 10, 50, 144, 191, 44) %shadowbox
+    locate (T + 1, L + 13)
+    put "Encrypt using Shift" .. %title
+    locate (T + 3, L + 1)
+    put "Sentence: " .. %shows the sentence
+    put s ..
+    locate (T + 4, L + 1)
+    put "Input the encrypt key: " .. %getting the encrypt key
+    get word
+    len := length (s) %making the variable len the length of the sentence
+    shift := ord (word) - ord ("a") + 1 %setting the variable shift to count how many positions to shift
+    for i : 1 .. len    % for the length of the sentence
+        c := s (i)    %c is the location of the letter in the sentence
+        if c >= "a" and c <= "z" then     %encrypting valid letters
+            shiftn := ord (c)     %converts the current letter to a number
+            shiftn := shiftn + shift     %shifts the number
+            if ((shiftn = 128) or chr (shiftn) > "z") then     %if the shifted letter excede z than it wraps it back around
+                shiftn := shiftn - 26
+            end if
+            sNew := sNew + chr (shiftn)     %regenerates the new sentence
+        elsif c = " " then        % if there is a space than adds a space
+            sNew := sNew + d    %d is a space
+        end if
+    end for
+    locate (T + 6, L + 1)
+    put "Encrypted sentence: " .. %displays the new sentence
+    put sNew ..
+    locate (T + 8, L + 1)
+    mydelay
+end e1
+    procedure searchmenu
+        cls
+        loop
+            shadowbox (T, L, 11, 55, 144, 191, 44)
+            locate (T + 1, L + 1)
+            put " " : 20 ..
+            put "SEARCH MENU" ..
+            locate (T + 3, L + 1)
+            put "1) Search for the first position of a letter." ..
+            locate (T + 4, L + 1)
+            put "2) Count all the occurrences of a single letter." ..
+            locate (T + 5, L + 1)
+            put "3) Statistics" ..
+            locate (T + 6, L + 1)
+            put "4) Count the number of words in the sentence." ..
+            locate (T + 7, L + 1)
+            put "5) Search for the position of a word." ..
+            locate (T + 8, L + 1)
+            put "6) Count the number of times a word is used." ..
+            locate (T + 9, L + 1)
+            put "7) Return to the Main Menu." ..
+            locate (T + 10, L + 1)
+            put "Input your option: " ..
+            get option
+            exit when option = "7"
+            if option = "1" then
+                s1
+            elsif option = "2" then
+                s2
+            elsif option = "3" then
+                s3
+            elsif option = "4" then
+                s4
+            elsif option = "5" then
+                s5
+            elsif option = "6" then
+                s6
+
+            end if
+        end loop
+
+    end searchmenu
+
+    procedure replacemenu
+        cls
+        loop
+            shadowbox (T, L, 10, 65, 144, 191, 44)
+            locate (T + 1, L + 25)
+            put "REPLACE MENU" ..
+            locate (T + 3, L + 1)
+            put "1) Replace first occurrence of a single letter." ..
+            locate (T + 4, L + 1)
+            put "2) Replace all occurrences of a single letter." ..
+            locate (T + 5, L + 1)
+            put "3) Replace all vowels." ..
+            locate (T + 6, L + 1)
+            put "4) Replace group of letters by another group." ..
+            locate (T + 7, L + 1)
+            put "5) Replace group of letters by another group when confirmed." ..
+            locate (T + 8, L + 1)
+            put "6) Return to the Main Menu." ..
+            locate (T + 9, L + 1)
+            put "Input your option: " ..
+            get option
+            exit when option = "6"
+            if option = "1" then
+                r1
+            elsif option = "2" then
+                r2
+            elsif option = "3" then
+                r3
+            elsif option = "4" then
+                r4
+            elsif option = "5" then
+                r5
+            end if
+        end loop
+
+    end replacemenu
+
+    procedure encryptmenu
+        cls
+        loop
+            shadowbox (T, L, 7, 30, 144, 191, 44)
+            locate (T + 1, L + 8)
+            put "ENCRYPT MENU" ..
+            locate (T + 3, L + 1)
+            put "1) Shift method." ..
+            locate (T + 4, L + 1)
+            put "2) Return to the Main Menu" ..
+            locate (T + 5, L + 1)
+            put " Input your option: " ..
+            get option
+            exit when option = "2"
+            if option = "1" then
+                e1
+            end if
+        end loop
+    end encryptmenu
+
+    splashscreen
+    loop
+
+        shadowbox (T, L, 9, 22, 144, 191, 44)
+        locate (T + 1, L + 5)
+        put "  Main Menu" ..
+        locate (T + 3, L + 1)
+        put "1) Input a sentence" ..
+        locate (T + 4, L + 1)
+        put "2) Search Menu" ..
+        locate (T + 5, L + 1)
+        put "3) Replace Menu" ..
+        locate (T + 6, L + 1)
+        put "4) Encrypt Menu" ..
+        locate (T + 7, L + 1)
+        put "5) Quit" ..
+        locate (T + 8, L + 1)
+        put "Option: " ..
+        get option
+        exit when option = "5"
+        if option = "1" then
+            inputsentence
+        elsif option = "2" then
+            searchmenu
+        elsif option = "3" then
+            replacemenu
+        elsif option = "4" then
+            encryptmenu
+        end if
+    end loop
+    cls
+    splashscreen
+    put " " : 25 ..
+    put "Assignment 2 Finished~~~"
